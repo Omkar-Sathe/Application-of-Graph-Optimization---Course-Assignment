@@ -9,7 +9,7 @@ The primary objective is to develop an assignment scheme that maximizes the numb
 No installation is required. Clone the repository and run the code on a local device on any integrated development environment (IDE).
 
 # Usage
-To solve the problem at hand, execute the provided Java code. The CSV file "simple_test.csv" contains the necessary data for the assignment problem. Ensure the CSV file follows the specified format.
+To solve the problem at hand, execute the provided Java code. The CSV file's contains the necessary data for the assignment problem. Ensure any additional CSV file follows the specified format.
 
 The code can be compiled using the code:  
 ``javac filename.java``
