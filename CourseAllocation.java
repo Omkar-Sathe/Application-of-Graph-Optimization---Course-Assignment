@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -209,7 +211,7 @@ public class CourseAllocation {
 
   public static void main(String[] args) {
 
-    String csvFile = "testcase_3_prof_less_than_courses.csv";
+    String csvFile = "testcase_1.csv";
 
     // CSV reading logic
     try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
@@ -293,7 +295,7 @@ public class CourseAllocation {
 
       Set<Integer> uniqueCourseIndices = new HashSet<>();
       Set<String> uniqueCourseName = new HashSet<>();
-      
+      Map<String,Integer> courses = new HashMap<String,Integer>();
       while ((line = br2.readLine()) != null) {
         String[] data = line.split(",");
 
@@ -302,16 +304,17 @@ public class CourseAllocation {
           int courseIndex = getCourseIndex(courseName, n);
 
           // Check if the courseIndex is not already in the set
-          if (uniqueCourseIndices.add(courseIndex)) {
-            uniqueCourseName.add(courseName);
-            System.out.println("Unique Course Indices: " + uniqueCourseIndices);
-      System.out.println("Unique Course Name: " + uniqueCourseName);
+          if (!courses.containsValue(courseIndex)) {
+            courses.put(courseName, courseIndex);
+      //       System.out.println("Unique Course Indices: " + uniqueCourseIndices);
+      // System.out.println("Unique Course Name: " + uniqueCourseName);
             solver.addEdge(courseIndex, t, 1);
           }
         }
       }
-      System.out.println("Unique Course Indices: " + uniqueCourseIndices);
-      System.out.println("Unique Course Name: " + uniqueCourseName);
+      // System.out.println("Unique Course Indices: " + uniqueCourseIndices);
+      // System.out.println("Unique Course Name: " + uniqueCourseName);
+      System.out.println("Unique Courses:  " + courses);
       br2.close(); // Close the BufferedReader
 
       System.out.printf("Maximum Flow is: %.2f\n", solver.getMaxFlow());
