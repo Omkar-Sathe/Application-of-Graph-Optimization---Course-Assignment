@@ -1,8 +1,11 @@
 import static java.lang.Math.min;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -317,12 +320,24 @@ public class CourseAllocation {
       System.out.println("Unique Courses:  " + courses);
       br2.close(); // Close the BufferedReader
 
-      System.out.printf("Total courses alloted : %.2f\n", Math.floor(solver.getMaxFlow()));
+      
 
       List<Edge>[] resultGraph = solver.getGraph();
 
       // Displays all edges part of the resulting residual graph.
-      for (List<Edge> edges : resultGraph) {
+      
+
+      PrintStream originalOut = System.out;
+
+      try {
+            // Create a new PrintStream to redirect output
+            PrintStream fileOut = new PrintStream(new FileOutputStream("output.txt"));
+
+            // Set the System.out to the fileOut
+            System.setOut(fileOut);
+            System.out.printf("Unique Courses:  " + courses);
+            System.out.printf("\nTotal courses alloted : %.2f\n", Math.floor(solver.getMaxFlow()));
+            for (List<Edge> edges : resultGraph) {
         for (Edge e : edges) {
           if (e.flow > 0.0 && e.to != t && e.from != s
           ) {
@@ -331,6 +346,14 @@ public class CourseAllocation {
         }
 
       }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            // Reset the System.out to the originalOut
+            System.setOut(originalOut);
+        }
+
     } catch (IOException e) {
       e.printStackTrace();
     }
