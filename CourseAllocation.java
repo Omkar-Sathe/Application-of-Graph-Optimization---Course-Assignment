@@ -307,6 +307,7 @@ public class CourseAllocation {
 
           // Check if the courseIndex is not already in the set
           if (!courses.containsValue(courseIndex)) {
+            uniqueCourseIndices.add(courseIndex);
             courses.put(courseName, courseIndex);
             solver.addEdge(courseIndex, t, 1);
           }
@@ -318,24 +319,22 @@ public class CourseAllocation {
 
       // Displays all edges part of the resulting residual graph.
       boolean allCdc = true;
-      for (int i = n + 1; i < n + 7; i++) {
-        if (!uniqueCourseIndices.contains(i))
-          continue; // checks only if course is of cdc type
-        double totalFlow = 0;
+        for(int i = n+1; i<n+7; i++)
+        {
+            //System.out.println(uniqueCourseIndices.contains(i));
+            if(!uniqueCourseIndices.contains(i)) continue;
+            double totalFlow = 0;
         List<Edge> edges = resultGraph[i];
         for (Edge edge : edges) {
-          if (!edge.isResidual()) {
-            totalFlow += edge.flow;
-          }
+            if (!edge.isResidual()) {
+                totalFlow += edge.flow;
+            }
         }
-        System.out.println(totalFlow);
-        if (totalFlow != 1) // if total flow != 1 that means cdc course has not been alloted. Error!
-        {
-          allCdc = false;
-          break;
-        }
+        //System.out.println(totalFlow);
+        if(totalFlow!=1) 
+        {allCdc = false; break;}
 
-      }
+    }
 
       boolean crash = false;
       for (int i = 0; i < n; i++) {

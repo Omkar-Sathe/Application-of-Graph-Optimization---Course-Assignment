@@ -1,7 +1,1 @@
-Unique Courses:  {FELEC2=11, FCDC3=6, FCDC2=5}
-Total courses alloted : 2.00
-All CDCs alloted successfully!
-Edge 0 -> 11 | flow = 0.50
-Edge 1 -> 5 | flow = 0.50
-Edge 1 -> 6 | flow = 0.50
-Edge 2 -> 5 | flow = 0.50
+Unique Courses:  {FELEC2=11, FCDC3=6, FCDC2=5}Allocation not shown as all CDCs not alloted. CRASH!
