@@ -9,20 +9,20 @@ The primary objective is to develop an assignment scheme that maximizes the numb
 No installation is required. Clone the repository and run the code on a local device on any integrated development environment (IDE).
 
 # Usage
-To solve the problem at hand, execute the provided Java code. The CSV file's contains the necessary data for the assignment problem. Ensure any additional CSV file follows the specified format.
+To solve the problem at hand, execute the provided Java code. The CSV files contain the necessary data/test cases for the assignment problem. Ensure any additional CSV file follows the specified format.
 
 The code can be compiled using the code:  
-``javac filename.java``
+``javac CourseAllocation.java``
 
 The code can be run using the code:  
-``java filename``
+``java CourseAllocation``
 
-After the code is run, the assignments for the courses can be seen in the output file.
+After the code is run, the assignments for the courses can be seen in the output file (output.txt).
 
-The code shall generate a different output each time it runs i.e. it shall give a different allocation each time whilst adhering to the constraints provided.
+The code shall generate a different output each time it runs, i.e., it shall give a different allocation each time while adhering to the constraints provided.
 
 # Contributing
-Contributions are welcome! You can contribute by adding more real-life constraints to enhance the problem model.  Potential modifications may include adjusting the maximum number of courses "y" for each category of professors, instead of requiring exact adherence, or extending the number of professor categories beyond the existing three to devise a more generalized solution. Feel free to submit issues or pull requests.
+Contributions are welcome! You can contribute by adding more real-life constraints to enhance the problem model.  Potential modifications may include adjusting the maximum number of courses "y" for each category of professors instead of requiring exact adherence or extending the number of professor categories beyond the existing three to devise a more generalized solution. Feel free to submit issues or pull requests.
 
 # License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
