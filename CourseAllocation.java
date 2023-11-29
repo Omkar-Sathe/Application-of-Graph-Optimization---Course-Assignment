@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -241,27 +240,28 @@ public class CourseAllocation {
       NetworkFlowSolverBase solver = new FordFulkersonDfsSolver(n, s, t);
 
       n = n - 15;
-
+      Set<Integer> uniqueX1 = new HashSet<>();
       // First loop: Add edges from source to professors
       while ((line = br2.readLine()) != null) {
         String[] data = line.split(",");
         categoryIndex = getCategoryIndex(data[0]);
         professorIndex = getProfessorIndex(data[1]);
-        
 
         double weight = getWeightForCategory(categoryIndex);
-
 
         // if professor is of type x3, then he can have course load = 0.5, 1, or 1.5.
         // so we implemented a random system to ensure we get different suboptimal
         // solutions each time code is run
         if (weight == 1.5) {
           double rando = CourseAllocation.generateRandomNumber();
-      
+
           solver.addEdge(s, professorIndex, rando);
         } else {
-      
+
           solver.addEdge(s, professorIndex, weight);
+        }
+        if (weight == 1) {
+          uniqueX1.add(professorIndex);
         }
       }
 
@@ -297,8 +297,7 @@ public class CourseAllocation {
       br2.readLine(); // Skip the header line
 
       Set<Integer> uniqueCourseIndices = new HashSet<>();
-      Set<String> uniqueCourseName = new HashSet<>();
-      Map<String,Integer> courses = new HashMap<String,Integer>();
+      Map<String, Integer> courses = new HashMap<String, Integer>();
       while ((line = br2.readLine()) != null) {
         String[] data = line.split(",");
 
@@ -309,69 +308,84 @@ public class CourseAllocation {
           // Check if the courseIndex is not already in the set
           if (!courses.containsValue(courseIndex)) {
             courses.put(courseName, courseIndex);
-      //       System.out.println("Unique Course Indices: " + uniqueCourseIndices);
-      // System.out.println("Unique Course Name: " + uniqueCourseName);
             solver.addEdge(courseIndex, t, 1);
           }
         }
       }
-      // System.out.println("Unique Course Indices: " + uniqueCourseIndices);
-      // System.out.println("Unique Course Name: " + uniqueCourseName);
-      System.out.println("Unique Courses:  " + courses);
       br2.close(); // Close the BufferedReader
-
-      
 
       List<Edge>[] resultGraph = solver.getGraph();
 
       // Displays all edges part of the resulting residual graph.
       boolean allCdc = true;
-        for(int i = n+1; i<n+7; i++)
-        {
-            System.out.println(uniqueCourseIndices.contains(i));
-            if(!uniqueCourseIndices.contains(i)) continue;
-            double totalFlow = 0;
+      for (int i = n + 1; i < n + 7; i++) {
+        if (!uniqueCourseIndices.contains(i))
+          continue; // checks only if course is of cdc type
+        double totalFlow = 0;
         List<Edge> edges = resultGraph[i];
         for (Edge edge : edges) {
-            if (!edge.isResidual()) {
-                totalFlow += edge.flow;
-            }
+          if (!edge.isResidual()) {
+            totalFlow += edge.flow;
+          }
         }
         System.out.println(totalFlow);
-        if(totalFlow!=1) 
-        {allCdc = false; break;}
+        if (totalFlow != 1) // if total flow != 1 that means cdc course has not been alloted. Error!
+        {
+          allCdc = false;
+          break;
+        }
 
-    }
+      }
+
+      boolean crash = false;
+      for (int i = 0; i < n; i++) {
+        if (!uniqueX1.contains(i))
+          continue; // checking for crash test for x1 prof
+        double totalFlowFromNode = 0.0;
+        // Loop through all edges from node i
+        for (Edge edge : resultGraph[i]) {
+          // Check if the edge is not residual
+          if (!edge.isResidual()) {
+            totalFlowFromNode += edge.flow;
+          }
+        }
+
+        if (totalFlowFromNode != 1)
+          crash = true; // if x1 prof is not allocated 1 entire course, crash!
+      }
 
       PrintStream originalOut = System.out;
 
       try {
-            // Create a new PrintStream to redirect output
-            PrintStream fileOut = new PrintStream(new FileOutputStream("output.txt"));
-            
-            // Set the System.out to the fileOut
-            System.setOut(fileOut);
-            System.out.printf("Unique Courses:  " + courses);
-            System.out.printf("\nTotal courses alloted : %.2f\n", Math.floor(solver.getMaxFlow()));
-            if (allCdc){
-              System.out.println("All CDCs alloted successfully!");
-            for (List<Edge> edges : resultGraph) {
-              for (Edge e : edges) {
-                if (e.flow > 0.0 && e.to != t && e.from != s) {
-                  System.out.println(e.toString(s, t));
-                }
+        // Create a new PrintStream to redirect output
+        PrintStream fileOut = new PrintStream(new FileOutputStream("output.txt"));
+
+        // Set the System.out to the fileOut
+        System.setOut(fileOut);
+        System.out.printf("Unique Courses:  " + courses);
+
+        if (allCdc && !crash) {
+          System.out.printf("\nTotal courses alloted : %.2f\n", Math.floor(solver.getMaxFlow()));
+          System.out.println("All CDCs alloted successfully!");
+          for (List<Edge> edges : resultGraph) {
+            for (Edge e : edges) {
+              if (e.flow > 0.0 && e.to != t && e.from != s) {
+                System.out.println(e.toString(s, t));
               }
-
             }
-          }
-          else System.out.println("Allocation not shown as all CDCs not alloted. CRASH!");
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            // Reset the System.out to the originalOut
-            System.setOut(originalOut);
-        }
+          }
+        } else if (!allCdc)
+          System.out.println("Allocation not shown as all CDCs not alloted. CRASH!");
+        else
+          System.out.println("Crashed because an x1 professor was allocated less than 1 course");
+
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      } finally {
+        // Reset the System.out to the originalOut
+        System.setOut(originalOut);
+      }
 
     } catch (IOException e) {
       e.printStackTrace();
