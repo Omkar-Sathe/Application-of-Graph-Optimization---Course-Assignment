@@ -292,6 +292,7 @@ public class CourseAllocation {
       br2.readLine(); // Skip the header line
 
       Set<Integer> uniqueCourseIndices = new HashSet<>();
+      Set<String> uniqueCourseName = new HashSet<>();
       
       while ((line = br2.readLine()) != null) {
         String[] data = line.split(",");
@@ -302,12 +303,15 @@ public class CourseAllocation {
 
           // Check if the courseIndex is not already in the set
           if (uniqueCourseIndices.add(courseIndex)) {
-            
+            uniqueCourseName.add(courseName);
+            System.out.println("Unique Course Indices: " + uniqueCourseIndices);
+      System.out.println("Unique Course Name: " + uniqueCourseName);
             solver.addEdge(courseIndex, t, 1);
           }
         }
       }
       System.out.println("Unique Course Indices: " + uniqueCourseIndices);
+      System.out.println("Unique Course Name: " + uniqueCourseName);
       br2.close(); // Close the BufferedReader
 
       System.out.printf("Maximum Flow is: %.2f\n", solver.getMaxFlow());
