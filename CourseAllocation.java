@@ -209,7 +209,7 @@ public class CourseAllocation {
 
   public static void main(String[] args) {
 
-    String csvFile = "testcase_2.csv";
+    String csvFile = "testcase_3_prof_less_than_courses.csv";
 
     // CSV reading logic
     try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
@@ -292,7 +292,7 @@ public class CourseAllocation {
       br2.readLine(); // Skip the header line
 
       Set<Integer> uniqueCourseIndices = new HashSet<>();
-
+      
       while ((line = br2.readLine()) != null) {
         String[] data = line.split(",");
 
@@ -307,6 +307,7 @@ public class CourseAllocation {
           }
         }
       }
+      System.out.println("Unique Course Indices: " + uniqueCourseIndices);
       br2.close(); // Close the BufferedReader
 
       System.out.printf("Maximum Flow is: %.2f\n", solver.getMaxFlow());
