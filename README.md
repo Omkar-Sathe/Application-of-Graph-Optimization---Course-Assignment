@@ -1,1 +1,1 @@
-# Application-of-Graph-Optimization---Course-Assignment
+# Application of Graph Optimization Course Assignment
