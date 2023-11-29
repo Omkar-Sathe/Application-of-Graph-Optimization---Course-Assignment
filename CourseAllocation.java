@@ -41,8 +41,8 @@ public class CourseAllocation {
       String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
       String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
       return String.format(
-          "Edge %s -> %s | flow = %.2f | capacity = %.2f | is residual: %s",
-          u, v, flow, capacity, isResidual());
+          "Edge %s -> %s | flow = %.2f",
+          u, v, flow);
 
     }
   }
@@ -209,7 +209,7 @@ public class CourseAllocation {
 
   public static void main(String[] args) {
 
-    String csvFile = "simple_test.csv";
+    String csvFile = "testcase_2.csv";
 
     // CSV reading logic
     try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
@@ -229,7 +229,7 @@ public class CourseAllocation {
       br.close();
       BufferedReader br2 = new BufferedReader(new FileReader(csvFile));
       br2.readLine(); // Skip the header line
-      n = n + 14;
+      n = n + 15;
       s = n - 2;
       t = n - 1;
 
@@ -242,23 +242,20 @@ public class CourseAllocation {
         String[] data = line.split(",");
         categoryIndex = getCategoryIndex(data[0]);
         professorIndex = getProfessorIndex(data[1]);
-        // Now to process the data as needed
-        System.out.println("Category: " + categoryIndex);
-        System.out.println("Professor Name: " + professorIndex);
-        System.out.println("Preferences: " + Arrays.toString(Arrays.copyOfRange(data, 2, data.length)));
+        
 
         double weight = getWeightForCategory(categoryIndex);
-        System.out.println("Weight : " + weight);
+
 
         // if professor is of type x3, then he can have course load = 0.5, 1, or 1.5.
         // so we implemented a random system to ensure we get different suboptimal
         // solutions each time code is run
         if (weight == 1.5) {
           double rando = CourseAllocation.generateRandomNumber();
-          System.out.println("Weight is: " + weight);
+      
           solver.addEdge(s, professorIndex, rando);
         } else {
-          System.out.println("Weight is: " + weight);
+      
           solver.addEdge(s, professorIndex, weight);
         }
       }
@@ -305,7 +302,7 @@ public class CourseAllocation {
 
           // Check if the courseIndex is not already in the set
           if (uniqueCourseIndices.add(courseIndex)) {
-            System.out.println("Unique Course Indices: " + uniqueCourseIndices);
+            
             solver.addEdge(courseIndex, t, 1);
           }
         }
@@ -319,7 +316,7 @@ public class CourseAllocation {
       // Displays all edges part of the resulting residual graph.
       for (List<Edge> edges : resultGraph) {
         for (Edge e : edges) {
-          if (e.flow > 0.0 // && e.to != t && e.from != s
+          if (e.flow > 0.0 && e.to != t && e.from != s
           ) {
             System.out.println(e.toString(s, t));
           }
