@@ -317,7 +317,7 @@ public class CourseAllocation {
       System.out.println("Unique Courses:  " + courses);
       br2.close(); // Close the BufferedReader
 
-      System.out.printf("Maximum Flow is: %.2f\n", solver.getMaxFlow());
+      System.out.printf("Total courses alloted : %.2f\n", Math.floor(solver.getMaxFlow()));
 
       List<Edge>[] resultGraph = solver.getGraph();
 
