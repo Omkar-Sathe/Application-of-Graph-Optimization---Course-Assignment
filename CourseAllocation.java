@@ -325,27 +325,46 @@ public class CourseAllocation {
       List<Edge>[] resultGraph = solver.getGraph();
 
       // Displays all edges part of the resulting residual graph.
-      
+      boolean allCdc = true;
+        for(int i = n+1; i<n+7; i++)
+        {
+            System.out.println(uniqueCourseIndices.contains(i));
+            if(!uniqueCourseIndices.contains(i)) continue;
+            double totalFlow = 0;
+        List<Edge> edges = resultGraph[i];
+        for (Edge edge : edges) {
+            if (!edge.isResidual()) {
+                totalFlow += edge.flow;
+            }
+        }
+        System.out.println(totalFlow);
+        if(totalFlow!=1) 
+        {allCdc = false; break;}
+
+    }
 
       PrintStream originalOut = System.out;
 
       try {
             // Create a new PrintStream to redirect output
             PrintStream fileOut = new PrintStream(new FileOutputStream("output.txt"));
-
+            
             // Set the System.out to the fileOut
             System.setOut(fileOut);
             System.out.printf("Unique Courses:  " + courses);
             System.out.printf("\nTotal courses alloted : %.2f\n", Math.floor(solver.getMaxFlow()));
+            if (allCdc){
+              System.out.println("All CDCs alloted successfully!");
             for (List<Edge> edges : resultGraph) {
-        for (Edge e : edges) {
-          if (e.flow > 0.0 && e.to != t && e.from != s
-          ) {
-            System.out.println(e.toString(s, t));
-          }
-        }
+              for (Edge e : edges) {
+                if (e.flow > 0.0 && e.to != t && e.from != s) {
+                  System.out.println(e.toString(s, t));
+                }
+              }
 
-      }
+            }
+          }
+          else System.out.println("Allocation not shown as all CDCs not alloted. CRASH!");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
