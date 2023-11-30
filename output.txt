@@ -1,1 +1,1 @@
-Unique Courses:  {FELEC2=11, FCDC3=6, FCDC2=5}Allocation not shown as all CDCs not alloted. CRASH!
+Unique Courses:  {FCDC1=3}Crashed because an x2 professor was allocated less than 1 course

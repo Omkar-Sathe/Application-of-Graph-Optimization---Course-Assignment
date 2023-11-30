@@ -213,7 +213,7 @@ public class CourseAllocation {
 
   public static void main(String[] args) {
 
-    String csvFile = "testcase_1.csv";
+    String csvFile = "testcase_4.csv";
 
     // CSV reading logic
     try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
@@ -377,7 +377,7 @@ public class CourseAllocation {
         } else if (!allCdc)
           System.out.println("Allocation not shown as all CDCs not alloted. CRASH!");
         else
-          System.out.println("Crashed because an x1 professor was allocated less than 1 course");
+          System.out.println("Crashed because an x2 professor was allocated less than 1 course");
 
       } catch (FileNotFoundException e) {
         e.printStackTrace();
