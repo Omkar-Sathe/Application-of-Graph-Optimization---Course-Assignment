@@ -24,7 +24,5 @@ The code shall generate a different output each time it runs, i.e., it shall giv
 # Contributing
 Contributions are welcome! You can contribute by adding more real-life constraints to enhance the problem model.  Potential modifications may include adjusting the maximum number of courses "y" for each category of professors instead of requiring exact adherence or extending the number of professor categories beyond the existing three to devise a more generalized solution. Feel free to submit issues or pull requests.
 
-# License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
 
 
